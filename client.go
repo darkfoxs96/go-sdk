@@ -110,21 +110,25 @@ func (c *Client) prepareRequest(method, urlStr string, body interface{}) (*http.
 		return nil, err
 	}
 
-	buf := new(bytes.Buffer)
+	var out io.Reader
 	if body != nil {
 
 		switch v := body.(type) {
+		case io.Reader:
+			out = v
 		case *bytes.Buffer:
-			buf = v
+			out = v
 		default:
+			buf := new(bytes.Buffer)
 			err = json.NewEncoder(buf).Encode(body)
 			if err != nil {
 				return nil, err
 			}
+			out = buf
 		}
 	}
 
-	req, err := http.NewRequest(method, u.String(), buf)
+	req, err := http.NewRequest(method, u.String(), out)
 	if err != nil {
 		return nil, err
 	}

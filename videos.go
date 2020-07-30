@@ -2,6 +2,7 @@ package apivideosdk
 
 import (
 	"fmt"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -21,7 +22,7 @@ type VideosServiceI interface {
 	Update(videoID string, updateRequest *VideoRequest) (*Video, error)
 	Delete(videoID string) error
 	Upload(videoID string, filePath string) (*Video, error)
-	UploadFromRequest(videoID string, file multipart.File, fileHeaders *multipart.FileHeader) (*Video, error)
+	UploadFromRequest(videoID string, file io.Reader, fileHeaders *multipart.FileHeader) (*Video, error)
 	Status(videoID string) (*VideoStatus, error)
 	PickThumbnail(videoID string, timecode string) (*Video, error)
 	UploadThumbnail(videoID string, filePath string) (*Video, error)
