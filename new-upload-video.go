@@ -20,7 +20,7 @@ type UploadFileReader struct {
 	formWriter     *multipart.Writer
 }
 
-func (r *UploadFileReader) Init(file io.Reader, filePartWriter io.Writer, formWriter *multipart.Writer) () {
+func (r *UploadFileReader) Init(file io.Reader, filePartWriter io.Writer, formWriter *multipart.Writer) {
 	r.filePartWriter = filePartWriter
 	r.file = file
 	r.formWriter = formWriter
@@ -72,7 +72,7 @@ func (r *UploadFileReader) Read(p []byte) (n int, err error) {
 	return outSize, err
 }
 
-func (c *Client) prepareRangeFromRequest(urlStr string, file io.Reader, fileHeaders *multipart.FileHeader) ([]*http.Request, error) {
+func (c *Client) prepareRangeFromRequest(urlStr string, file io.Reader, fileName string) ([]*http.Request, error) {
 	requests := []*http.Request{}
 
 	body := new(UploadFileReader)
@@ -81,7 +81,7 @@ func (c *Client) prepareRangeFromRequest(urlStr string, file io.Reader, fileHead
 	body.readBuf = make([]byte, body.maxReadBuf, body.maxReadBuf)
 	body.writeBuf = make([]byte, body.maxWriteBuf, body.maxWriteBuf)
 	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile("file", fileHeaders.Filename)
+	part, err := writer.CreateFormFile("file", fileName)
 	if err != nil {
 		return nil, err
 	}
@@ -98,10 +98,10 @@ func (c *Client) prepareRangeFromRequest(urlStr string, file io.Reader, fileHead
 	return requests, nil
 }
 
-func (s *VideosService) UploadFromRequest(videoID string, file io.Reader, fileHeaders *multipart.FileHeader) (*Video, error) {
+func (s *VideosService) UploadFromRequest(videoID string, file io.Reader, fileName string) (*Video, error) {
 	path := fmt.Sprintf("%s/%s/source", videosBasePath, videoID)
 
-	requests, err := s.client.prepareRangeFromRequest(path, file, fileHeaders)
+	requests, err := s.client.prepareRangeFromRequest(path, file, fileName)
 
 	if err != nil {
 		return nil, err
