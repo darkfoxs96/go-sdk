@@ -1,4 +1,4 @@
-module github.com/apivideo/go-sdk
+module github.com/darkfoxs96/go-sdk
 
 go 1.12
 

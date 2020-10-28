@@ -4,7 +4,7 @@ The [api.video](https://api.video/) web-service helps you put video on the web w
 
 ## Installation
 ```bash
-go get github.com/apivideo/go-sdk
+go get github.com/darkfoxs96/go-sdk
 ```
 
 ## Quick Start
@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	apivideosdk "github.com/apivideo/go-sdk"
+	apivideosdk "github.com/darkfoxs96/go-sdk"
 )
 
 func main() {
