@@ -153,6 +153,7 @@ type Assets struct {
 	Iframe    string `json:"iframe,omitempty"`
 	Player    string `json:"player,omitempty"`
 	Thumbnail string `json:"thumbnail,omitempty"`
+	Mp4       string `json:"mp4,omitempty"`
 }
 
 //Get returns a Video by id
